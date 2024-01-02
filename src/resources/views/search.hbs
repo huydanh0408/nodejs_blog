@@ -1,9 +1,23 @@
 <div class="p-4">
-    <form method="get" action="/news">
+    {{!-- form  --}}
+    <form method="post" action="">
+        {{!-- search input--}}
         <div class="form-group">
             <label for="searchInput">Search Value</label>
             <input type="text" name="q" class="form-control" id="searchInput" placeholder="Enter keyword">
         </div>
+
+        {{!-- gender select --}}
+        <div class="form-group">
+            <label for="genderInput">Gender</label>
+            <select name="gender" class="form-control" id="genderInput" >
+                <option value="">-- Chọn giới tính --</option>
+                <option value="male">Nam</option>
+                <option value="female">Nữ</option>
+            </select>
+        </div>
+
+        {{!-- btn submit --}}
         <button type="submit" class="btn btn-primary">Search</button>
     </form>
 </div>
