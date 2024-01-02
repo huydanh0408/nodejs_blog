@@ -1,4 +1,4 @@
-const path = require('path')
+const path = require("path");
 const express = require("express");
 const { engine } = require("express-handlebars");
 const morgan = require("morgan");
@@ -10,7 +10,7 @@ const port = 3000;
 app.use(morgan("combined"));
 
 // Serving static files in Express
-app.use(express.static(path.join(__dirname,'public')))
+app.use(express.static(path.join(__dirname, "public")));
 // app.use(express.static('src/public'))
 
 // Template engine
@@ -20,6 +20,16 @@ app.set("views", "./src/resources/views");
 
 app.get("/", (req, res) => {
   res.render("home");
+});
+
+app.get("/search", (req, res) => {
+  // console.log(req.query);
+  res.render("search");
+});
+
+app.get("/news", (req, res) => {
+  console.log('query',req.query);
+  res.render("news");
 });
 
 app.listen(port, () => {
