@@ -1,4 +1,5 @@
 const Course = require('../models/Course');
+const { multipleMongooseToObject } = require('../../utils/mongoose');
 
 // const SiteController = function () {
 //   // [GET] /
@@ -14,11 +15,27 @@ const Course = require('../models/Course');
 
 class SiteController {
     // [GET] /
-    async index(req, res) {
-        const courses = await Course.find({});
-        res.json(courses);
-        // res.render('home');
+    // async await
+    async index(req, res, next) {
+        try {
+            let courses = await Course.find({});
+            // Bảo mật của thư viện mongoose -> đổi obj constructors thành obj thường
+            res.render('home', { courses: multipleMongooseToObject(courses) });
+        } catch (error) {
+            next(res);
+        }
     }
+
+    // promise
+    /*
+    index(req, res, next) {
+        Course.find({})
+            .then((courses) => {
+                res.render('home', { courses: multipleMongooseToObject(courses) });
+            })
+            .catch(next); // handle error
+    }
+    */
 
     // [GET] /search
     search(req, res) {
