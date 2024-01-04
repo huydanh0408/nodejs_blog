@@ -13,6 +13,33 @@ class CourseController {
             next(res);
         }
     }
+
+    // [GET] /courses/create
+    // async await
+    create(req, res, next) {
+        try {
+            res.render('courses/create');
+        } catch (error) {
+            next(res);
+        }
+    }
+
+    // [POST] /courses/store
+    // async await
+    async store(req, res, next) {
+        try {
+            // generate fields from req
+            const formData = req.body;
+            formData.image = `https://i.ytimg.com/vi/${req.body.videoId}/hq720.jpg`;
+
+            const course = new Course(formData);
+            course.save();
+
+            res.redirect('/');
+        } catch (error) {
+            next(res);
+        }
+    }
 }
 
 module.exports = new CourseController();
