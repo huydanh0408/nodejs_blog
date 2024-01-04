@@ -19,7 +19,7 @@ class SiteController {
     async index(req, res, next) {
         try {
             let courses = await Course.find({});
-            // Bảo mật của thư viện mongoose -> đổi obj constructors thành obj thường
+            // Bảo mật của thư viện mongoose -> đổi obj constructor thành obj thường
             res.render('home', { courses: multipleMongooseToObject(courses) });
         } catch (error) {
             next(res);

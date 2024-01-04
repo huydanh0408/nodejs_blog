@@ -3,3 +3,10 @@
 .card-course-item {
     margin: 16px 8px 0px;
 }
+
+a:focus,
+a:hover,
+a:visited {
+    outline: none;
+    text-decoration: none;
+}
