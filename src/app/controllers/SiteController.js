@@ -1,3 +1,5 @@
+const Course = require('../models/Course');
+
 // const SiteController = function () {
 //   // [GET] /
 //   this.index = function (req, res) {
@@ -11,15 +13,17 @@
 // };
 
 class SiteController {
-  // [GET] /
-  index(req, res) {
-    res.render("home");
-  }
+    // [GET] /
+    async index(req, res) {
+        const courses = await Course.find({});
+        res.json(courses);
+        // res.render('home');
+    }
 
-  // [GET] /search
-  search(req, res) {
-    res.render("search");
-  }
+    // [GET] /search
+    search(req, res) {
+        res.render('search');
+    }
 }
 
 module.exports = new SiteController();

@@ -1,41 +1,42 @@
 {
-  "name": "blog",
-  "version": "1.0.0",
-  "description": "",
-  "main": "src/index.js",
-  "scripts": {
-    "start": "nodemon --inspect src/index.js",
-    "watch": "node-sass --watch src/resources/scss/ --output src/public/css/",
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+ssh://git@github.com/huydanh0408/nodejs_blog.git"
-  },
-  "author": "huytd",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/huydanh0408/nodejs_blog/issues"
-  },
-  "homepage": "https://github.com/huydanh0408/nodejs_blog#readme",
-  "lint-staged": {
-    "src/**/*.{js,json,scss}": "prettier --single-quote --trailing-comma all --tab-width 4 --print-width 80 --semi --write"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
+    "name": "blog",
+    "version": "1.0.0",
+    "description": "",
+    "main": "src/index.js",
+    "scripts": {
+        "start": "nodemon --inspect src/index.js",
+        "watch": "node-sass --watch src/resources/scss/ --output src/public/css/",
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+ssh://git@github.com/huydanh0408/nodejs_blog.git"
+    },
+    "author": "huytd",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/huydanh0408/nodejs_blog/issues"
+    },
+    "homepage": "https://github.com/huydanh0408/nodejs_blog#readme",
+    "lint-staged": {
+        "src/**/*.{js,json,scss}": "prettier --single-quote --trailing-comma all --tab-width 4 --print-width 80 --semi --write"
+    },
+    "husky": {
+        "hooks": {
+            "pre-commit": "lint-staged"
+        }
+    },
+    "dependencies": {
+        "express": "^4.18.2",
+        "express-handlebars": "^7.1.2",
+        "mongoose": "^8.0.3"
+    },
+    "devDependencies": {
+        "husky": "^8.0.3",
+        "lint-staged": "^15.2.0",
+        "morgan": "^1.10.0",
+        "node-sass": "^9.0.0",
+        "nodemon": "^3.0.2",
+        "prettier": "^3.1.1"
     }
-  },
-  "dependencies": {
-    "express": "^4.18.2",
-    "express-handlebars": "^7.1.2"
-  },
-  "devDependencies": {
-    "husky": "^8.0.3",
-    "lint-staged": "^15.2.0",
-    "morgan": "^1.10.0",
-    "node-sass": "^9.0.0",
-    "nodemon": "^3.0.2",
-    "prettier": "^3.1.1"
-  }
 }
