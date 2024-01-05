@@ -24,6 +24,17 @@ class CourseController {
         }
     }
 
+    // [GET] /:id/edit
+    // async await
+    async edit(req, res, next) {
+        try {
+            let course = await Course.findById(req.params.id);
+            res.render('courses/edit', { course: mongooseToObject(course) });
+        } catch (error) {
+            next(res);
+        }
+    }
+
     // [POST] /courses/store
     // async await
     async store(req, res, next) {
@@ -36,6 +47,21 @@ class CourseController {
             course.save();
 
             res.redirect('/');
+        } catch (error) {
+            next(res);
+        }
+    }
+
+    // [PUT] courses/:id
+    // async await
+    async update(req, res, next) {
+        try {
+            // generate fields from req
+            const formData = req.body;
+            formData.image = `https://i.ytimg.com/vi/${req.body.videoId}/hq720.jpg`;
+
+            await Course.updateOne({ _id: req.params.id }, formData);
+            res.redirect('/me/stored/courses');
         } catch (error) {
             next(res);
         }
