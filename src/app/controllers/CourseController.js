@@ -66,6 +66,17 @@ class CourseController {
             next(res);
         }
     }
+
+    // [DELETE] courses/:id
+    // async await
+    async destroy(req, res, next) {
+        try {
+            await Course.deleteOne({ _id: req.params.id });
+            res.redirect('back');
+        } catch (error) {
+            next(res);
+        }
+    }
 }
 
 module.exports = new CourseController();
