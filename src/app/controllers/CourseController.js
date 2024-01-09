@@ -40,13 +40,12 @@ class CourseController {
     async store(req, res, next) {
         try {
             // generate fields from req
-            const formData = req.body;
-            formData.image = `https://i.ytimg.com/vi/${req.body.videoId}/hq720.jpg`;
+            req.body.image = `https://i.ytimg.com/vi/${req.body.videoId}/hq720.jpg`;
 
-            const course = new Course(formData);
+            const course = new Course(req.body);
             course.save();
 
-            res.redirect('/');
+            res.redirect('/me/stored/courses');
         } catch (error) {
             next(res);
         }
@@ -57,11 +56,21 @@ class CourseController {
     async update(req, res, next) {
         try {
             // generate fields from req
-            const formData = req.body;
-            formData.image = `https://i.ytimg.com/vi/${req.body.videoId}/hq720.jpg`;
+            req.body.image = `https://i.ytimg.com/vi/${req.body.videoId}/hq720.jpg`;
 
-            await Course.updateOne({ _id: req.params.id }, formData);
+            await Course.updateOne({ _id: req.params.id }, req.body);
             res.redirect('/me/stored/courses');
+        } catch (error) {
+            next(res);
+        }
+    }
+
+    // [PATCH] courses/:id/restore
+    // async await
+    async restore(req, res, next) {
+        try {
+            await Course.restore({ _id: req.params.id });
+            res.redirect('back');
         } catch (error) {
             next(res);
         }
@@ -70,6 +79,17 @@ class CourseController {
     // [DELETE] courses/:id
     // async await
     async destroy(req, res, next) {
+        try {
+            await Course.delete({ _id: req.params.id });
+            res.redirect('back');
+        } catch (error) {
+            next(res);
+        }
+    }
+
+    // [DELETE] courses/:id/force
+    // async await
+    async forceDestroy(req, res, next) {
         try {
             await Course.deleteOne({ _id: req.params.id });
             res.redirect('back');
