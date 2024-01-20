@@ -10,7 +10,7 @@
                 <th scope="col">Tên khoá học</th>
                 <th scope="col">Video ID</th>
                 <th scope="col">Trình độ</th>
-                <th scope="col">Thời gian tạo</th>
+                <th scope="col">Thời gian xóa</th>
                 <th scope="col" colspan="2"></th>
             </tr>
         </thead>
@@ -22,7 +22,7 @@
                 <td><a href="/courses/{{this.slug}}">{{this.name}}</a></td>
                 <td>{{this.videoId}}</td>
                 <td>{{this.level}}</td>
-                <td>{{this.createdAt}}</td>
+                <td>{{this.deletedAt}}</td>
                 <td>
                     <a class="btn btn-outline-info btn-restore" data-id="{{this._id}}">Khôi phục</a>
                 </td>

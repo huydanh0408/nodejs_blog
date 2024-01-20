@@ -6,9 +6,13 @@ class MeController {
     // async await
     async storedCourses(req, res, next) {
         try {
+            let courseCount = await Course.countDocumentsWithDeleted({
+                deleted: true,
+            });
             let courses = await Course.find({});
             // Bảo mật của thư viện mongoose -> đổi obj constructor thành obj thường
             res.render('me/stored-courses', {
+                courseCount,
                 courses: multipleMongooseToObject(courses),
             });
         } catch (error) {
