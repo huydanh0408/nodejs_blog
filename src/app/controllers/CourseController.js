@@ -50,6 +50,32 @@ class CourseController {
             next(res);
         }
     }
+    // [POST] /courses/handle-actions
+    // async await
+    async handleAction(req, res, next) {
+        try {
+            switch (req.body.action) {
+                case 'delete':
+                    await Course.delete({ _id: { $in: req.body.courseIds } });
+                    res.redirect('back');
+                    break;
+                case 'force-delete':
+                    await Course.deleteMany({
+                        _id: { $in: req.body.courseIds },
+                    });
+                    res.redirect('back');
+                    break;
+                case 'restore':
+                    await Course.restore({ _id: { $in: req.body.courseIds } });
+                    res.redirect('back');
+                    break;
+                default:
+                    console.log('Invalid action');
+            }
+        } catch (error) {
+            next(res);
+        }
+    }
 
     // [PUT] courses/:id
     // async await

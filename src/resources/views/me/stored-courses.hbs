@@ -1,12 +1,28 @@
-<div class="mt-4">
+<form class="mt-4" method="POST" action="/courses/handle-actions">
     <div>
         <h3>Danh sách khóa học</h3>
         <a href="/me/trash/courses">Thùng rác ({{courseCount}})</a>
     </div>
+
+    <div class="input-group mt-3 d-inline-flex">
+        <div class="input-group-prepend">
+            <div class="input-group-text">
+                <input id="checkbox-all" type="checkbox" aria-label="Checkbox for following text input">
+
+                <select name="action" class="custom-select mx-2" required>
+                    <option selected value="">-- Hành động --</option>
+                    <option value="delete">Xóa</option>
+                </select>
+
+                <button class="btn btn-primary disabled check-all-btn">Thực hiện</button>
+            </div>
+        </div>
+    </div>
+
     <table class="table mt-4">
         <thead class=".table-light thead-light">
             <tr>
-                <th scope="col">#</th>
+                <th scope="col" colspan="2" class="text-right">#</th>
                 <th scope="col">Tên khoá học</th>
                 <th scope="col">Video ID</th>
                 <th scope="col">Trình độ</th>
@@ -18,7 +34,8 @@
 
             {{#each courses}}
             <tr>
-                <th scope="row">{{sum @index 1}}</th>
+                <td><input name="courseIds[]" value="{{this._id}}" type="checkbox"></td>
+                <th class="text-right" scope="row">{{sum @index 1}}</th>
                 <td><a href="/courses/{{this.slug}}">{{this.name}}</a></td>
                 <td>{{this.videoId}}</td>
                 <td>{{this.level}}</td>
@@ -43,7 +60,7 @@
         </tbody>
 
     </table>
-</div>
+</form>
 
 {{!-- Delete Course Modal --}}
 <div id="delete-course-modal" class="modal" tabindex="-1" role="dialog">
@@ -75,6 +92,9 @@
     const formDelete = document.forms['delete-form']
 
     addEventListener('DOMContentLoaded', function () {
+        const checkboxAll = $('#checkbox-all')
+        const checkboxItem = $('input[name="courseIds[]"]')
+        const checkAllBtn = $('.check-all-btn')
 
         // modal confirm show
         $('#delete-course-modal').on('show.bs.modal', function (event) {
@@ -89,6 +109,40 @@
             formDelete.action = `/courses/${courseId}?_method=DELETE`;
             formDelete.submit()
         }
+
+        // checkboxAll change
+        checkboxAll.change(() => {
+            const isCheckedAll = checkboxAll.prop('checked')
+            checkboxItem.prop('checked', isCheckedAll)
+
+            renderCheckAllBtn(isCheckedAll)
+        })
+
+        // checkboxItem change
+        checkboxItem.change(() => {
+            const isChecked = $('input[name="courseIds[]"]:checked').length
+            const isCheckedAll = isChecked === checkboxItem.length
+
+            checkboxAll.prop('checked', isCheckedAll)
+            renderCheckAllBtn(isChecked)
+        })
+
+        // Rerender checkAllBtn
+        function renderCheckAllBtn(isChecked) {
+            if (isChecked) {
+                checkAllBtn.removeClass('disabled')
+            } else {
+                checkAllBtn.addClass('disabled')
+            }
+        }
+
+        // checkAllBtn submit
+        checkAllBtn.submit((e) => {
+            if (checkAllBtn.hasClass('disabled')) {
+                e.preventDefault()
+            }
+        })
+
     })
 
 </script>

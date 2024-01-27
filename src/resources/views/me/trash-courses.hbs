@@ -1,12 +1,29 @@
-<div class="mt-4">
+<form name="container-form" class="mt-4" method="POST" action="/courses/handle-actions">
     <div>
         <h3>Khóa học đã xóa</h3>
         <a href="/me/stored/courses">Khoá học của tôi</a>
     </div>
+
+    <div class="input-group mt-3 d-inline-flex">
+        <div class="input-group-prepend">
+            <div class="input-group-text">
+                <input id="checkbox-all" type="checkbox" aria-label="Checkbox for following text input">
+
+                <select name="action" class="custom-select mx-2" required>
+                    <option selected value="">-- Hành động --</option>
+                    <option value="restore">Khôi phục</option>
+                    <option value="force-delete">Xóa vĩnh viễn</option>
+                </select>
+
+                <button class="btn btn-primary disabled check-all-btn">Thực hiện</button>
+            </div>
+        </div>
+    </div>
+
     <table class="table mt-4">
         <thead class=".table-light thead-light">
             <tr>
-                <th scope="col">#</th>
+                <th scope="col" colspan="2" class="text-right">#</th>
                 <th scope="col">Tên khoá học</th>
                 <th scope="col">Video ID</th>
                 <th scope="col">Trình độ</th>
@@ -18,6 +35,7 @@
 
             {{#each courses}}
             <tr>
+                <td><input name="courseIds[]" value="{{this._id}}" type="checkbox"></td>
                 <th scope="row">{{sum @index 1}}</th>
                 <td><a href="/courses/{{this.slug}}">{{this.name}}</a></td>
                 <td>{{this.videoId}}</td>
@@ -42,7 +60,7 @@
         </tbody>
 
     </table>
-</div>
+</form>
 
 {{!-- Delete Course Modal --}}
 <div id="delete-course-modal" class="modal" tabindex="-1" role="dialog">
@@ -55,7 +73,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <p>Hành động này không thể khôi phục. Bạn vẫn muốn xóa khóa học này?</p>
+                <p>Hành động này không thể khôi phục. Bạn vẫn muốn xóa?</p>
             </div>
             <div class="modal-footer">
                 <button id="btn-delete-course" type="button" class="btn btn-danger">Xóa</button>
@@ -74,12 +92,19 @@
         const btnRestoreCourse = $('.btn-restore')
         const btnDeleteCourse = document.querySelector('#btn-delete-course')
         const formSubmit = document.forms['submit-form']
+        const checkboxAll = $('#checkbox-all')
+        const checkboxItem = $('input[name="courseIds[]"]')
+        const checkAllBtn = $('.check-all-btn')
+        const containerForm = document.forms['container-form']
+        const optionForceDelete = $('option[value="force-delete"]')
+        const selectOption = $('select[name="action"]')
 
         // modal confirm show
         $('#delete-course-modal').on('show.bs.modal', function (event) {
             const button = $(event.relatedTarget);
             courseId = button.data('id');
         })
+
 
         // btnRestoreCourse click
         // .click => jquery
@@ -96,10 +121,64 @@
         // .onclick =? domEvent
         btnDeleteCourse.onclick = (e) => {
             e.preventDefault()
+            console.log(typeof courseId)
 
-            formSubmit.action = `/courses/${courseId}/force?_method=DELETE`;
-            formSubmit.submit()
+            if (typeof courseId === "string") {
+                formSubmit.action = `/courses/${courseId}/force?_method=DELETE`;
+                formSubmit.submit()
+            } else {
+                containerForm.submit()
+            }
+
         }
+
+        // checkboxAll change
+        checkboxAll.change(() => {
+            const isCheckedAll = checkboxAll.prop('checked')
+            checkboxItem.prop('checked', isCheckedAll)
+
+            renderCheckAllBtn(isCheckedAll)
+        })
+
+        // checkboxItem change
+        checkboxItem.change(() => {
+            const isChecked = $('input[name="courseIds[]"]:checked').length
+            const isCheckedAll = isChecked === checkboxItem.length
+
+            checkboxAll.prop('checked', isCheckedAll)
+            renderCheckAllBtn(isChecked)
+        })
+
+        // Rerender checkAllBtn
+        function renderCheckAllBtn(isChecked) {
+            if (isChecked) {
+                checkAllBtn.removeClass('disabled')
+            } else {
+                checkAllBtn.addClass('disabled')
+
+            }
+        }
+
+        // checkAllBtn submit
+        checkAllBtn.submit((e) => {
+            if (checkAllBtn.hasClass('disabled')) {
+                e.preventDefault()
+            }
+        })
+
+        // selectOption Change
+        selectOption.change((e) => {
+            console.log(optionForceDelete.val())
+            console.log(selectOption.val())
+            if (optionForceDelete.val() === selectOption.val()) {
+                checkAllBtn.click((e) => {
+                    e.preventDefault()
+                    $('#delete-course-modal').modal()
+                })
+
+            }
+        })
+
     })
 
 </script>
