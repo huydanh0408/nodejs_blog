@@ -15,7 +15,7 @@
                     <option value="force-delete">Xóa vĩnh viễn</option>
                 </select>
 
-                <button class="btn btn-primary disabled check-all-btn">Thực hiện</button>
+                <button class="btn btn-primary check-all-btn" disabled="disabled">Thực hiện</button>
             </div>
         </div>
     </div>
@@ -152,24 +152,22 @@
         // Rerender checkAllBtn
         function renderCheckAllBtn(isChecked) {
             if (isChecked) {
-                checkAllBtn.removeClass('disabled')
+                checkAllBtn.attr('disabled', false)
             } else {
-                checkAllBtn.addClass('disabled')
+                checkAllBtn.attr('disabled', true)
 
             }
         }
 
-        // checkAllBtn submit
-        checkAllBtn.submit((e) => {
-            if (checkAllBtn.hasClass('disabled')) {
+        // containerForm submit
+        containerForm.submit((e) => {
+            if (checkAllBtn.has('disabled="disabled"')) {
                 e.preventDefault()
             }
         })
 
         // selectOption Change
         selectOption.change((e) => {
-            console.log(optionForceDelete.val())
-            console.log(selectOption.val())
             if (optionForceDelete.val() === selectOption.val()) {
                 checkAllBtn.click((e) => {
                     e.preventDefault()

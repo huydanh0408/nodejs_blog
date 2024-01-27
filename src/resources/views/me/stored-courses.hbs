@@ -1,4 +1,4 @@
-<form class="mt-4" method="POST" action="/courses/handle-actions">
+<form name="container-form" class="mt-4" method="POST" action="/courses/handle-actions">
     <div>
         <h3>Danh sách khóa học</h3>
         <a href="/me/trash/courses">Thùng rác ({{courseCount}})</a>
@@ -9,12 +9,12 @@
             <div class="input-group-text">
                 <input id="checkbox-all" type="checkbox" aria-label="Checkbox for following text input">
 
-                <select name="action" class="custom-select mx-2" required>
+                <select name="action" class="custom-select mx-2" required="required">
                     <option selected value="">-- Hành động --</option>
                     <option value="delete">Xóa</option>
                 </select>
 
-                <button class="btn btn-primary disabled check-all-btn">Thực hiện</button>
+                <button class="btn btn-primary check-all-btn" disabled="disabled">Thực hiện</button>
             </div>
         </div>
     </div>
@@ -95,6 +95,7 @@
         const checkboxAll = $('#checkbox-all')
         const checkboxItem = $('input[name="courseIds[]"]')
         const checkAllBtn = $('.check-all-btn')
+        const containerForm = $('form[name="container-form"]')
 
         // modal confirm show
         $('#delete-course-modal').on('show.bs.modal', function (event) {
@@ -130,15 +131,15 @@
         // Rerender checkAllBtn
         function renderCheckAllBtn(isChecked) {
             if (isChecked) {
-                checkAllBtn.removeClass('disabled')
+                checkAllBtn.attr('disabled', false)
             } else {
-                checkAllBtn.addClass('disabled')
+                checkAllBtn.attr('disabled', true)
             }
         }
 
-        // checkAllBtn submit
-        checkAllBtn.submit((e) => {
-            if (checkAllBtn.hasClass('disabled')) {
+        // containerForm submit
+        containerForm.submit((e) => {
+            if (checkAllBtn.has('disabled="disabled"')) {
                 e.preventDefault()
             }
         })
