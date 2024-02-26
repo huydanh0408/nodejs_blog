@@ -10,6 +10,13 @@ class MeController {
                 deleted: true,
             });
             let courses = await Course.find({});
+
+            if (req.query.hasOwnProperty('_sort')) {
+                courses = await Course.find({}).sort({
+                    [req.query.column]: req.query.type,
+                });
+            }
+
             // Bảo mật của thư viện mongoose -> đổi obj constructor thành obj thường
             res.render('me/stored-courses', {
                 courseCount,

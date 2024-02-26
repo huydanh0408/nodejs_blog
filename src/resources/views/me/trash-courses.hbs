@@ -95,7 +95,7 @@
         const checkboxAll = $('#checkbox-all')
         const checkboxItem = $('input[name="courseIds[]"]')
         const checkAllBtn = $('.check-all-btn')
-        const containerForm = document.forms['container-form']
+        const containerForm = $('form[name="container-form"]')
         const optionForceDelete = $('option[value="force-delete"]')
         const selectOption = $('select[name="action"]')
 
@@ -123,7 +123,7 @@
             e.preventDefault()
             console.log(typeof courseId)
 
-            if (typeof courseId === "string") {
+            if (typeof courseId === "number" || typeof courseId === "string") {
                 formSubmit.action = `/courses/${courseId}/force?_method=DELETE`;
                 formSubmit.submit()
             } else {
